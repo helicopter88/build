@@ -122,19 +122,29 @@ $(error Directory names containing spaces not supported)
 endif
 
 # Check for the corrent jdk
-ifneq ($(shell java -version 2>&1 | grep -i openjdk),)
-$(info ************************************************************)
-$(info You are attempting to build with an unsupported JDK.)
-$(info $(space))
-$(info You use OpenJDK but only Sun/Oracle JDK is supported.)
-$(info Please follow the machine setup instructions at)
-$(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
-$(info ************************************************************)
-$(error stop)
-endif
+#ifneq ($(shell java -version 2>&1 | grep -i openjdk),)
+#$(info ************************************************************)
+#$(info You are attempting to build with an unsupported JDK.)
+#$(info $(space))
+#$(info You use OpenJDK but only Sun/Oracle JDK is supported.)
+#$(info Please follow the machine setup instructions at)
+#$(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
+#$(info ************************************************************)
+#$(error stop)
+#endif
 
 # Check for the correct version of java
 java_version := $(shell java -version 2>&1 | head -n 1 | grep '^java .*[ "]1\.6[\. "$$]')
+ifneq ($(shell java -version 2>&1 | grep -i openjdk),)
+$(warning ************************************************************)
+$(warning AOSP errors out when using OpenJDK, saying you need to use)
+$(warning Java SE 1.6 instead.)
+$(warning A build with OpenJDK seems to work fine though - if you)
+$(warning run into any Java errors, you may want to try using the)
+$(warning version required by AOSP though.)
+$(warning ************************************************************)
+#java_version :=
+endif
 ifeq ($(strip $(java_version)),)
 $(info ************************************************************)
 $(info You are attempting to build with the incorrect version)
