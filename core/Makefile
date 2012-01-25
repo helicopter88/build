@@ -1228,6 +1228,12 @@ else
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
 endif
 
+ifneq ($(NAM_VARIANT),)
+    $(INTERNAL_OTA_PACKAGE_TARGET): modelidcfg := true
+else
+    $(INTERNAL_OTA_PACKAGE_TARGET): modelidcfg := false
+endif
+
 ifeq ($(TARGET_OTA_ASSERT_DEVICE),)
     $(INTERNAL_OTA_PACKAGE_TARGET): override_device := auto
 else
@@ -1262,6 +1268,12 @@ ifeq ($(TARGET_RELEASETOOLS_EXTENSIONS),)
 $(INTERNAL_UPDATE_PACKAGE_TARGET): extensions := $(TARGET_DEVICE_DIR)/../common
 else
 $(INTERNAL_UPDATE_PACKAGE_TARGET): extensions := $(TARGET_RELEASETOOLS_EXTENSIONS)
+endif
+
+ifneq ($(NAM_VARIANT),)
+    $(INTERNAL_OTA_PACKAGE_TARGET): modelidcfg := true
+else
+    $(INTERNAL_OTA_PACKAGE_TARGET): modelidcfg := false
 endif
 
 $(INTERNAL_UPDATE_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
