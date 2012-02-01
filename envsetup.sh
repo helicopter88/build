@@ -57,9 +57,9 @@ function check_product()
     fi
 
     if (echo -n $1 | grep -q -e "htc_") ; then
-        NAM_VARIANT=$(echo -n $1)
+       NAM_VARIANT=$(echo -n $1)
     else
-        NAM_VARIANT=
+       NAM_VARIANT=
     fi
     export NAM_VARIANT
 
