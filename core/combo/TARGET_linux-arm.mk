@@ -157,7 +157,7 @@ TARGET_GLOBAL_CPPFLAGS += $(call cc-option,-std=gnu++11)
 endif
 
 # More flags/options can be added here
-TARGET_RELEASE_CFLAGS := \
+TARGET_RELEASE_CFLAGS += \
 			-DNDEBUG \
 			-g \
 			-Wstrict-aliasing=2 \
