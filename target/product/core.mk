@@ -48,6 +48,7 @@ PRODUCT_PACKAGES += \
     atrace \
     bouncycastle \
     bu \
+    busybox \
     cacerts \
     com.android.location.provider \
     com.android.location.provider.xml \
@@ -63,6 +64,7 @@ PRODUCT_PACKAGES += \
     drmserver \
     dx \
     ext \
+    ffmpeg \
     framework-res \
     hprof-conv \
     icu.dat \
@@ -122,13 +124,15 @@ PRODUCT_PACKAGES += \
     libwilhelm \
     libz \
     make_ext4fs \
+    lrzsz \
     mdnsd \
     okhttp \
     requestsync \
     screencap \
     sensorservice \
     telephony-common \
-    mms-common
+    mms-common \
+    x264
 
 # SELinux packages
 PRODUCT_PACKAGES += \
