@@ -1,4 +1,4 @@
-#
+\#
 # Copyright (C) 2006 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,7 +83,10 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -O3 \
                         -fomit-frame-pointer \
-                        -fno-strict-aliasing
+                        -fstrict-aliasing \
+                        -Wstrict-aliasing=2 \
+                        -Werror=strict-aliasing
+
 else
 TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
 endif
@@ -162,6 +165,7 @@ TARGET_RELEASE_CFLAGS := \
 			-DNDEBUG \
 			-g \
 			-Wstrict-aliasing=2 \
+			-Werror=strict-aliasing \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
 			-frename-registers
