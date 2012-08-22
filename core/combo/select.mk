@@ -50,6 +50,8 @@ $(combo_target)GLOBAL_CFLAGS := -fno-exceptions -Wno-multichar
 $(combo_target)RELEASE_CFLAGS := -O2 -g -Wstrict-aliasing=2 -Werror=strict-aliasing
 ifneq ($(combo_target),HOST_)
 $(combo_target)RELEASE_CFLAGS += -Werror=strict-aliasing
+else
+$(combo_target)RELEASE_CFLAGS += -Wno-error=strict-aliasing
 endif
 $(combo_target)GLOBAL_LDFLAGS :=
 $(combo_target)GLOBAL_ARFLAGS := crsP
