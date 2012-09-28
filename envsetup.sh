@@ -13,6 +13,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - godir:   Go to the directory containing a file.
 - mka:      Builds using SCHED_BATCH on all processors
 - reposync: Parallel repo sync using ionice and SCHED_BATCH
+- cmka:     Cleans and builds using mka.
 
 Look at the source to view more functions. The complete list is:
 EOF
@@ -1211,6 +1212,26 @@ function mka() {
             schedtool -B -n 1 -e ionice -n 1 make -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@"
             ;;
     esac
+}
+
+function cmka() {
+    if [ ! -z "$1" ]; then
+        for i in "$@"; do
+            case $i in
+                bacon|otapackage|systemimage)
+                    mka installclean
+                    mka $i
+                    ;;
+                *)
+                    mka clean-$i
+                    mka $i
+                    ;;
+            esac
+        done
+    else
+        mka clean
+        mka
+    fi
 }
 
 function reposync() {
