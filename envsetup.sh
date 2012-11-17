@@ -56,13 +56,6 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "htc_") ; then
-       NAM_VARIANT=$(echo -n $1)
-    else
-       NAM_VARIANT=
-    fi
-    export NAM_VARIANT
-
     CALLED_FROM_SETUP=true BUILD_SYSTEM=build/core \
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
