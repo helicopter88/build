@@ -94,6 +94,7 @@ PRODUCT_PACKAGES += \
     libicuuc \
     libjavacore \
     libkeystore \
+    libkissfft \
     libmdnssd \
     libnativehelper \
     libnfc_ndef \
