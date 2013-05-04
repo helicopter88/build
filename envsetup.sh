@@ -66,6 +66,11 @@ function check_product()
 
 VARIANT_CHOICES=(user userdebug eng)
 
+# Ensure our colors are used above preset colors
+unset GCC_COLORS
+# Always use diagnostic colors, supported in gcc 4.9.y+
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 # check to see if the supplied variant is valid
 function check_variant()
 {
