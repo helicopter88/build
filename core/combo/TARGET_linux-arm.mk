@@ -71,9 +71,18 @@ endif
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 TARGET_arm_CFLAGS :=    -O3 \
+                        -fgcse-after-reload \
+                        -fipa-cp-clone \
+                        -fpredictive-commoning \
+                        -fsched-spec-load \
+                        -funswitch-loops \
+                        -ftree-loop-distribution \
+                        -ftree-loop-linear \
+                        -fvect-cost-model \
                         -fomit-frame-pointer \
-                        -fstrict-aliasing    \
-                        -funswitch-loops
+                        -fstrict-aliasing \
+                        -Wstrict-aliasing=3 \
+                        -Werror=strict-aliasing
 
 # Modules can choose to compile some source as thumb. As
 # non-thumb enabled targets are supported, this is treated
@@ -86,14 +95,26 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
-                                -Werror=strict-aliasing
+                                -Werror=strict-aliasing \
+                                -fgcse-after-reload \
+                                -fsched-spec-load \
+                                -funswitch-loops \
+                                -fvect-cost-model \
+                                -fipa-cp-clone \
+                                -pipe
     else
         TARGET_thumb_CFLAGS :=  -mthumb \
                                 -O2 \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
-                                -Werror=strict-aliasing
+                                -Werror=strict-aliasing \
+                                -fgcse-after-reload \
+                                -fsched-spec-load \
+                                -funswitch-loops \
+                                -fvect-cost-model \
+                                -fipa-cp-clone \
+                                -pipe
     endif
 else
     TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
