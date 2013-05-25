@@ -78,7 +78,8 @@ TARGET_arm_CFLAGS :=    -O2 \
                         -funswitch-loops
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
-    TARGET_arm_CFLAGS :=    -fno-tree-vectorize
+    TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
+                            -fno-aggressive-loop-optimizations
 endif
 
 # Modules can choose to compile some source as thumb.
