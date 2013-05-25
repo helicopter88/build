@@ -77,6 +77,10 @@ TARGET_arm_CFLAGS :=    -O2 \
                         -fstrict-aliasing    \
                         -funswitch-loops
 
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
+    TARGET_arm_CFLAGS :=    -fno-tree-vectorize
+endif
+
 # Modules can choose to compile some source as thumb.
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
