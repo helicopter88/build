@@ -86,6 +86,10 @@ TARGET_arm_CFLAGS :=    -O3 \
                         -Wstrict-aliasing=3 \
                         -Werror=strict-aliasing
 
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
+    TARGET_arm_CFLAGS :=    -fno-tree-vectorize
+endif
+
 # Modules can choose to compile some source as thumb.
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
     TARGET_thumb_CFLAGS :=  -mthumb \
