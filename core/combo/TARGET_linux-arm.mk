@@ -80,15 +80,23 @@ TARGET_arm_CFLAGS :=    -O3 \
 # as a 'hint'. If thumb is not enabled, these files are just
 # compiled as ARM.
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
-TARGET_thumb_CFLAGS :=  -mthumb \
-                        -O3 \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing \
-                        -Wstrict-aliasing=2 \
-                        -Werror=strict-aliasing
-
+    ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
+        TARGET_thumb_CFLAGS :=  -mthumb \
+                                -O3 \
+                                -fomit-frame-pointer \
+                                -fstrict-aliasing \
+                                -Wstrict-aliasing=2 \
+                                -Werror=strict-aliasing
+    else
+        TARGET_thumb_CFLAGS :=  -mthumb \
+                                -O2 \
+                                -fomit-frame-pointer \
+                                -fstrict-aliasing \
+                                -Wstrict-aliasing=2 \
+                                -Werror=strict-aliasing
+    endif
 else
-TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
+    TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
 endif
 
 # Turn off strict-aliasing if we're building an AOSP variant without the
