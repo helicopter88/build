@@ -78,12 +78,21 @@ TARGET_arm_CFLAGS :=    -O3 \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
-TARGET_thumb_CFLAGS :=  -mthumb \
-                        -O3 \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing \
-                        -Wstrict-aliasing=2 \
-                        -Werror=strict-aliasing
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
+    TARGET_thumb_CFLAGS :=  -mthumb \
+                            -O3 \
+                            -fomit-frame-pointer \
+                            -fstrict-aliasing \
+                            -Wstrict-aliasing=2 \
+                            -Werror=strict-aliasing
+else
+    TARGET_thumb_CFLAGS :=  -mthumb \
+                            -O2 \
+                            -fomit-frame-pointer \
+                            -fstrict-aliasing \
+                            -Wstrict-aliasing=2 \
+                            -Werror=strict-aliasing
+endif
 
 # Turn off strict-aliasing if we're building an AOSP variant without the
 # patchset...
