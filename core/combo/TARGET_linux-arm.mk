@@ -87,9 +87,10 @@ TARGET_arm_CFLAGS :=    -O3 \
                         -Werror=strict-aliasing
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
-    TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
-                            -fno-aggressive-loop-optimizations
-
+    ifneq ($(TARGET_CPU_VARIANT),krait)
+        TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
+                                -fno-aggressive-loop-optimizations
+    endif
     TARGET_thumb_CFLAGS :=  -fno-tree-vectorize \
                             -fno-aggressive-loop-optimizations
 endif
