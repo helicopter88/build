@@ -124,6 +124,10 @@ ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
     TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
                             -fno-aggressive-loop-optimizations
 
+    TARGET_thumb_CFLAGS :=  -fno-tree-vectorize \
+                            -fno-aggressive-loop-optimizations
+endif
+
 # Turn off strict-aliasing if we're building an AOSP variant without the
 # patchset...
 ifeq ($(DEBUG_NO_STRICT_ALIASING),yes)
