@@ -89,6 +89,9 @@ TARGET_arm_CFLAGS :=    -O3 \
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
     TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
                             -fno-aggressive-loop-optimizations
+
+    TARGET_thumb_CFLAGS :=  -fno-tree-vectorize \
+                            -fno-aggressive-loop-optimizations
 endif
 
 # Modules can choose to compile some source as thumb.
