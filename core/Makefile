@@ -1200,8 +1200,10 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   -k $(KEY_CERT_PAIR) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-.PHONY: otapackage
+.PHONY: otapackage trees
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
+trees: otapackage
+	   $(hide) ./vendor/cfx/tools/make_trees
 
 # -----------------------------------------------------------------
 # The update package
