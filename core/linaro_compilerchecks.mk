@@ -24,7 +24,7 @@
 ifeq ($(strip $(TARGET_TOOLS_PREFIX)),)
 # Unfortunately, this has to be hand-coded for each release, as $(TARGET_CC)
 # hasn't been defined by the point of this file's inclusion in config.mk yet
-LINARO_COMPILERCHECK_CC := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-4.8/bin/arm-linux-androideabi-gcc$(HOST_EXECUTABLE_SUFFIX)
+LINARO_COMPILERCHECK_CC := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-4.6/bin/arm-linux-androideabi-gcc$(HOST_EXECUTABLE_SUFFIX)
 else
 LINARO_COMPILERCHECK_CC := $(TARGET_TOOLS_PREFIX)gcc$(HOST_EXECUTABLE_SUFFIX)
 endif
