@@ -78,9 +78,6 @@ TARGET_arm_CFLAGS :=    -O3 \
                         -fpredictive-commoning \
                         -fsched-spec-load \
                         -funswitch-loops \
-                        -ftree-loop-distribution \
-                        -ftree-loop-linear \
-                        -fvect-cost-model \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=3 \
@@ -106,7 +103,6 @@ ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
                             -fgcse-after-reload \
                             -fsched-spec-load \
                             -funswitch-loops \
-                            -fvect-cost-model \
                             -fipa-cp-clone \
                             -pipe
 else
@@ -119,7 +115,6 @@ else
                             -fgcse-after-reload \
                             -fsched-spec-load \
                             -funswitch-loops \
-                            -fvect-cost-model \
                             -fipa-cp-clone \
                             -pipe
 endif
