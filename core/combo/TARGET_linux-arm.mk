@@ -181,8 +181,6 @@ endif
 TARGET_GLOBAL_CFLAGS += -Wno-psabi
 
 TARGET_GLOBAL_LDFLAGS += \
-			-Wl,-fuse-ld=mcld \
-			-Wl,-S \
 			-Wl,-z,noexecstack \
 			-Wl,-z,relro \
 			-Wl,-z,now \
