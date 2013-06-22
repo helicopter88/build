@@ -171,5 +171,14 @@ ifeq ($(HAVE_SELINUX),true)
         mac_permissions.xml
 endif
 
+ifeq ($(HAVE_SELINUX),true)
+    PRODUCT_PACKAGES += \
+        sepolicy \
+        file_contexts \
+        seapp_contexts \
+        property_contexts \
+        mac_permissions.xml
+endif
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
