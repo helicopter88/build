@@ -1205,11 +1205,21 @@ ifneq ($(recovery_fstab),)
 # -----------------------------------------------------------------
 # OTA update package
 
+# TARGET_BUILD_DATE is intended to act as a minimal BUILD_NUMBER
+# due to BUILD_NUMBER including generally unnecessary information. 
+TARGET_BUILD_DATE = $(shell date +%Y%m%d.%H%M%S)
+
+date := $(TARGET_BUILD_DATE)
 name := $(TARGET_PRODUCT)
-ifeq ($(TARGET_BUILD_TYPE),debug)
-  name := $(name)_debug
+
+ifeq ($(TARGET_BUILD_TYPE),codefirex)
+  name := $(name)-cfxp-$(BUILD_ID)-$(date)
+else
+  ifeq ($(TARGET_BUILD_TYPE),debug)
+    name := $(name)_debug
+  endif
+  name := $(name)-ota-$(FILE_NAME_TAG)
 endif
-name := $(name)-ota-$(FILE_NAME_TAG)
 
 INTERNAL_OTA_PACKAGE_TARGET := $(PRODUCT_OUT)/$(name).zip
 
@@ -1225,7 +1235,6 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 .PHONY: otapackage trees
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 trees: otapackage
-	   $(hide) ./vendor/cfx/tools/make_trees
 
 # -----------------------------------------------------------------
 # The update package
