@@ -239,10 +239,10 @@ include $(BUILD_SYSTEM)/qcom_utils.mk
 # Bring in dex_preopt.mk
 include $(BUILD_SYSTEM)/dex_preopt.mk
 
-ifneq ($(filter user userdebug eng,$(MAKECMDGOALS)),)
+ifneq ($(filter user userdebug eng codefirex,$(MAKECMDGOALS)),)
 $(info ***************************************************************)
 $(info ***************************************************************)
-$(info Do not pass '$(filter user userdebug eng tests,$(MAKECMDGOALS))' on \
+$(info Do not pass '$(filter user userdebug eng codefirex tests,$(MAKECMDGOALS))' on \
 		the make command line.)
 $(info Set TARGET_BUILD_VARIANT in buildspec.mk, or use lunch or)
 $(info choosecombo.)
@@ -329,9 +329,34 @@ else # !user_variant
   ADDITIONAL_BUILD_PROPERTIES += ro.kernel.android.checkjni=1
   # Set device insecure for non-user builds.
   ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
-  # Allow mock locations by default for non user builds
+  # Allow mock locations by default for non user builds.
   ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=1
-endif # !user_variant
+endif # !user_variant TARGET_BUILD_VARIANT
+
+## codefirex ##
+ifeq ($(TARGET_BUILD_VARIANT),codefirex)
+  # Pick up useful tools and codefirex additions
+  tags_to_install += debug codefirex
+  # Target is insecure in codefirex builds.
+  ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
+  # Enable Dalvik lock contention logging for codefirex builds.
+  ADDITIONAL_BUILD_PROPERTIES += dalvik.vm.lockprof.threshold=500
+  # Allow mock locations by default for codefirex builds
+  ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=0
+  # Ensure checkjni is disabled for codefirex builds.
+  ADDITIONAL_BUILD_PROPERTIES += ro.kernel.android.checkjni=0
+  # Enable target debugging is enabled for codefirex builds
+  enable_target_debugging := true
+
+  # Turn on Dalvik preoptimization for codefirex builds, but only if not
+  # explicitly disabled and the build is running on Linux (since host
+  # Dalvik isn't built for non-Linux hosts).
+  ifneq (true,$(DISABLE_DEXPREOPT))
+    ifeq ($(HOST_OS),linux)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif # codefirex TARGET_BUILD_VARIANT
 
 ifeq (true,$(strip $(enable_target_debugging)))
   # Target is more debuggable and adbd is on by default
@@ -352,8 +377,8 @@ ifneq ($(filter ro.setupwizard.mode=ENABLED, $(call collapse-pairs, $(ADDITIONAL
   ADDITIONAL_BUILD_PROPERTIES := $(filter-out ro.setupwizard.mode=%,\
           $(call collapse-pairs, $(ADDITIONAL_BUILD_PROPERTIES))) \
           ro.setupwizard.mode=OPTIONAL
-endif
-endif
+endif # !ro.setupwizard.mode=ENABLED
+endif # eng
 
 ## tests ##
 

@@ -130,8 +130,8 @@ LOCAL_BUILT_MODULE_STEM := package.apk
 
 LOCAL_PROGUARD_ENABLED:=$(strip $(LOCAL_PROGUARD_ENABLED))
 ifndef LOCAL_PROGUARD_ENABLED
-ifneq ($(filter user userdebug, $(TARGET_BUILD_VARIANT)),)
-    # turn on Proguard by default for user & userdebug build
+ifneq ($(filter user userdebug codefirex, $(TARGET_BUILD_VARIANT)),)
+    # turn on Proguard by default for user, userdebug and codefirex build
     LOCAL_PROGUARD_ENABLED :=full
 endif
 endif

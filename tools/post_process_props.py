@@ -25,7 +25,8 @@ def mangle_build_prop(prop):
 # function. The prop object has get(name) and put(name,value) methods.
 def mangle_default_prop(prop):
   # If ro.debuggable is 1, then enable adb on USB by default
-  # (this is for userdebug builds)
+  # This is for userdebug, and codefirex builds.
+  # Also enabled if enable_target_debugging := true for another build type
   if prop.get("ro.debuggable") == "1":
     val = prop.get("persist.sys.usb.config")
     if val == "":

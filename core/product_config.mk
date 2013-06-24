@@ -82,7 +82,7 @@ endef
 # These are the valid values of TARGET_BUILD_VARIANT.  Also, if anything else is passed
 # as the variant in the PRODUCT-$TARGET_BUILD_PRODUCT-$TARGET_BUILD_VARIANT form,
 # it will be treated as a goal, and the eng variant will be used.
-INTERNAL_VALID_VARIANTS := user userdebug eng tests
+INTERNAL_VALID_VARIANTS := user userdebug codefirex eng tests
 
 # ---------------------------------------------------------------
 # Provide "PRODUCT-<prodname>-<goal>" targets, which lets you build
