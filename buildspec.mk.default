@@ -34,6 +34,7 @@ ifndef TARGET_BUILD_VARIANT
 #TARGET_BUILD_VARIANT:=user
 #TARGET_BUILD_VARIANT:=userdebug
 #TARGET_BUILD_VARIANT:=eng
+#TARGET_BUILD_VARIANT:=codefirex
 endif
 
 # Choose additional targets to always install, even when building
