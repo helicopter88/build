@@ -1190,7 +1190,7 @@ BUILD_DATE = $(shell date +%Y%m%d.%H%M%S)
 date := $(BUILD_DATE)
 name := $(TARGET_PRODUCT)
 
-ifeq ($(TARGET_BUILD_TYPE),codefirex)
+ifeq ($(TARGET_BUILD_VARIANT),codefirex)
   name := $(name)-cfxp-$(BUILD_ID)-$(date)
 else
   ifeq ($(TARGET_BUILD_TYPE),debug)
