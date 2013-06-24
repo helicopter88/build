@@ -1205,11 +1205,11 @@ ifneq ($(recovery_fstab),)
 # -----------------------------------------------------------------
 # OTA update package
 
-# TARGET_BUILD_DATE is intended to act as a minimal BUILD_NUMBER
+# BUILD_DATE is intended to act as a minimal BUILD_NUMBER
 # due to BUILD_NUMBER including generally unnecessary information. 
-TARGET_BUILD_DATE = $(shell date +%Y%m%d.%H%M%S)
+BUILD_DATE = $(shell date +%Y%m%d.%H%M%S)
 
-date := $(TARGET_BUILD_DATE)
+date := $(BUILD_DATE)
 name := $(TARGET_PRODUCT)
 
 ifeq ($(TARGET_BUILD_TYPE),codefirex)

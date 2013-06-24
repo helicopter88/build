@@ -95,7 +95,7 @@ ifeq "" "$(BUILD_NUMBER)"
   # from this date/time" value.  Make it start with a non-digit so that
   # anyone trying to parse it as an integer will probably get "0".
   #
-  # You may use TARGET_BUILD_DATE if you wish to only receive the date 
+  # You may use BUILD_DATE if you wish to only receive the date 
   # at which a build was started.
   BUILD_NUMBER := eng.$(USER).$(shell date +%Y%m%d.%H%M%S)
 endif
