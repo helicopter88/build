@@ -1230,9 +1230,10 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   --backup=$(backuptool) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-.PHONY: otapackage trees
+.PHONY: otapackage trees bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 trees: otapackage
+bacon: otapackage
 
 # -----------------------------------------------------------------
 # The update package
