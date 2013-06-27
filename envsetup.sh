@@ -153,7 +153,7 @@ function setpaths()
     case $ARCH in
         arm)
 
-            local ARM_GCC_VER=$(get_build_var TARGET_ARM_GCC_VER)
+            local ARM_GCC_VER=$(get_build_var TARGET_ARM_EABI_GCC_VERSION)
             case $ARM_GCC_VER in
             4.4.3-aosp) toolchaindir=arm/arm-eabi-4.4.3-aosp/bin
                 echo "Notice: Using AOSP arm-eabi 4.4.3 for kernel"
@@ -172,7 +172,7 @@ function setpaths()
                 ;;
             *)
                 echo "Notice: Arm-eabi GCC version not set,"
-                echo "or can't find unknown GCC version: $TARGET_ARM_GCC_VER"
+                echo "or can't find unknown GCC version: $TARGET_ARM_EABI_GCC_VERSION"
                 echo "Using cfX-Toolchain arm-eabi 4.7.y for kernel"
                 toolchaindir=arm/arm-eabi-4.7/bin
                 ;;
