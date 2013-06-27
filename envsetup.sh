@@ -155,6 +155,9 @@ function setpaths()
 
             local ARM_GCC_VER=$(get_build_var TARGET_ARM_GCC_VER)
             case $ARM_GCC_VER in
+            4.4.3-aosp) toolchaindir=arm/arm-eabi-4.4.3-aosp/bin
+                echo "Notice: Using AOSP arm-eabi 4.4.3 for kernel"
+                ;;
             4.6-aosp) toolchaindir=arm/arm-eabi-4.6-aosp/bin
                 echo "Notice: Using AOSP arm-eabi 4.6.y for kernel"
                 ;;
