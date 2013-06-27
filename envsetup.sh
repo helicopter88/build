@@ -166,11 +166,11 @@ function setpaths()
             4.8) toolchaindir=arm/arm-eabi-4.8/bin
                 ;;
             *)
-                ifeq ($(strip $(TARGET_ARM_EABI_GCC_VERSION)),)
+                if [ -d "$ARM_GCC_VER" ]; then
                     echo "Error: Can't find unknown GCC version: $TARGET_ARM_EABI_GCC_VERSION"
                     echo "Now using cfX-Toolchain arm-eabi 4.7.y for kernel"
-                    export TARGET_ARM-EABI_GCC_VERSION=4.7
-                endif
+                    export TARGET_ARM_EABI_GCC_VERSION=4.7
+                fi
                 toolchaindir=arm/arm-eabi-4.7/bin
                 ;;
             esac
