@@ -391,7 +391,7 @@ function choosevariant()
         index=$(($index+1))
     done
 
-    local default_value=eng
+    local default_value=codefirex
     local ANSWER
 
     export TARGET_BUILD_VARIANT=
