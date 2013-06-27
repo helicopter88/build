@@ -156,24 +156,21 @@ function setpaths()
             local ARM_GCC_VER=$(get_build_var TARGET_ARM_EABI_GCC_VERSION)
             case $ARM_GCC_VER in
             4.4.3-aosp) toolchaindir=arm/arm-eabi-4.4.3-aosp/bin
-                echo "Notice: Using AOSP arm-eabi 4.4.3 for kernel"
                 ;;
             4.6-aosp) toolchaindir=arm/arm-eabi-4.6-aosp/bin
-                echo "Notice: Using AOSP arm-eabi 4.6.y for kernel"
                 ;;
             4.7-aosp) toolchaindir=arm/arm-eabi-4.7-aosp/bin
-                echo "Notice: Using AOSP arm-eabi 4.7.y for kernel"
                 ;;
             4.7) toolchaindir=arm/arm-eabi-4.7/bin
-                echo "Notice: Using cfX-Toolchain arm-eabi 4.7.y for kernel"
                 ;;
             4.8) toolchaindir=arm/arm-eabi-4.8/bin
-                echo "Notice: Using cfX-Toolchain arm-eabi 4.8.y for kernel"
                 ;;
             *)
-                echo "Notice: Arm-eabi GCC version not set,"
-                echo "or can't find unknown GCC version: $TARGET_ARM_EABI_GCC_VERSION"
-                echo "Using cfX-Toolchain arm-eabi 4.7.y for kernel"
+                ifeq ($(strip $(TARGET_ARM_EABI_GCC_VERSION)),)
+                    echo "Error: Can't find unknown GCC version: $TARGET_ARM_EABI_GCC_VERSION"
+                    echo "Now using cfX-Toolchain arm-eabi 4.7.y for kernel"
+                    export TARGET_ARM-EABI_GCC_VERSION=4.7
+                endif
                 toolchaindir=arm/arm-eabi-4.7/bin
                 ;;
             esac
