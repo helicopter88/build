@@ -73,6 +73,7 @@ PRODUCT_PACKAGES += \
     ip-up-vpn \
     ip6tables \
     iptables \
+    iw \
     keystore \
     keystore.default \
     libandroidfw \
@@ -98,6 +99,7 @@ PRODUCT_PACKAGES += \
     libmdnssd \
     libnativehelper \
     libnfc_ndef \
+    libnl \
     libportable \
     libpowermanager \
     libspeexresampler \
