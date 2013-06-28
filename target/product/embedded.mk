@@ -61,7 +61,9 @@ PRODUCT_PACKAGES += \
     service \
     servicemanager \
     surfaceflinger \
-    toolbox
+    toolbox \
+    iw \
+    libnl
 
 # SELinux packages
 PRODUCT_PACKAGES += \
