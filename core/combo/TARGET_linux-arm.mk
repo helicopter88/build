@@ -98,7 +98,7 @@ endif
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
         TARGET_thumb_CFLAGS :=  -mthumb \
-                                -O3 \
+                                -O2 \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
@@ -111,7 +111,7 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
                                 -pipe
     else
         TARGET_thumb_CFLAGS :=  -mthumb \
-                                -O2 \
+                                -Os \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
