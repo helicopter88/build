@@ -136,7 +136,10 @@ PRODUCT_PACKAGES += \
     uiautomator \
     telephony-common \
     mms-common \
-    x264
+    x264 \
+    zoneinfo.dat \
+    zoneinfo.idx \
+    zoneinfo.version
 
 PRODUCT_COPY_FILES += \
     system/core/rootdir/init.usb.rc:root/init.usb.rc \
