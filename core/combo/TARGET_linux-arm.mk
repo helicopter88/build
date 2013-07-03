@@ -83,8 +83,7 @@ TARGET_arm_CFLAGS :=    -fgcse-after-reload \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=3 \
-                        -Werror=strict-aliasing  \
-			-pipe
+                        -Werror=strict-aliasing
 
 ifeq ($(TARGET_BUILD_SMALL_SYSTEM),true)
     TARGET_arm_CFLAGS :=    -O2
