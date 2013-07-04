@@ -111,7 +111,7 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
                                 -pipe
     else
         TARGET_thumb_CFLAGS :=  -mthumb \
-                                -O2 \
+                                -Os \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
