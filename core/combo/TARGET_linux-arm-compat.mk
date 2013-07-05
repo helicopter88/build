@@ -33,6 +33,7 @@ else
         TARGET_arm_CFLAGS := -O2
     else
         TARGET_arm_CFLAGS := -O3
+    endif
 endif
 
 # Turn off strict-aliasing if we're building an AOSP variant without the
