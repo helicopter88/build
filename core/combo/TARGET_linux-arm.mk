@@ -85,12 +85,6 @@ TARGET_arm_CFLAGS :=    -fgcse-after-reload \
                         -Wstrict-aliasing=3 \
                         -Werror=strict-aliasing
 
-ifeq ($(TARGET_BUILD_SMALL_SYSTEM),true)
-    TARGET_arm_CFLAGS :=    -O2
-else
-    TARGET_arm_CFLAGS :=    -O3
-endif
-
 # Modules can choose to compile some source as thumb. As
 # non-thumb enabled targets are supported, this is treated
 # as a 'hint'. If thumb is not enabled, these files are just
@@ -98,7 +92,6 @@ endif
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
         TARGET_thumb_CFLAGS :=  -mthumb \
-                                -O3 \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
@@ -111,7 +104,6 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
                                 -pipe
     else
         TARGET_thumb_CFLAGS :=  -mthumb \
-                                -Os \
                                 -fomit-frame-pointer \
                                 -fstrict-aliasing \
                                 -Wstrict-aliasing=2 \
@@ -127,21 +119,9 @@ else
     TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
 endif
 
-ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION_COMPAT),true)
-    ifneq ($(TARGET_CPU_VARIANT),krait)
-        TARGET_arm_CFLAGS :=    -fno-tree-vectorize \
-                                -fno-aggressive-loop-optimizations
-    endif
-    TARGET_thumb_CFLAGS :=  -fno-tree-vectorize \
-                            -fno-aggressive-loop-optimizations
-endif
-
-# Turn off strict-aliasing if we're building an AOSP variant without the
-# patchset...
-ifeq ($(DEBUG_NO_STRICT_ALIASING),yes)
-TARGET_arm_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
-TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
-endif   
+# Include compatibility makefile for tricky optimizations
+# and target products
+include $(BUILD_COMBOS)/TARGET_linux-arm-compat.mk
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -211,9 +191,6 @@ TARGET_GLOBAL_CFLAGS += -mno-thumb-interwork
 endif
 
 TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
-ifneq ($(DEBUG_NO_STDCXX11),yes)
-TARGET_GLOBAL_CPPFLAGS += $(call cc-option,-std=gnu++11)
-endif
 
 # More flags/options can be added here
 TARGET_RELEASE_CFLAGS += \
