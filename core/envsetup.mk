@@ -1,6 +1,6 @@
 # Variables we check:
 #     HOST_BUILD_TYPE = { release debug }
-#     TARGET_BUILD_TYPE = { release debug }
+#     TARGET_BUILD_TYPE = { release debug development }
 # and we output a bunch of variables, see the case statement at
 # the bottom for the full list
 #     OUT_DIR is also set to "out" if it's not already set.
@@ -27,8 +27,15 @@ endif
 
 
 # the variant -- the set of files that are included for a build
+# the variant defaults to eng as a safe default
 ifeq ($(strip $(TARGET_BUILD_VARIANT)),)
 TARGET_BUILD_VARIANT := eng
+endif
+
+# the type -- type of build pertaining to target usage
+# the type defaults to release as a safe default
+ifeq ($(strip $(TARGET_BUILD_TYPE)),)
+TARGET_BUILD_TYPE := release
 endif
 
 # ---------------------------------------------------------------
@@ -129,11 +136,6 @@ endif
 TARGET_OS := linux
 # TARGET_ARCH should be set by BoardConfig.mk and will be checked later
 
-# the target build type defaults to release
-ifneq ($(TARGET_BUILD_TYPE),debug)
-TARGET_BUILD_TYPE := release
-endif
-
 # ---------------------------------------------------------------
 # figure out the output directories
 
@@ -154,6 +156,7 @@ DEBUG_OUT_DIR := $(OUT_DIR)/debug
 # Move the host or target under the debug/ directory
 # if necessary.
 TARGET_OUT_ROOT_release := $(OUT_DIR)/target
+TARGET_OUT_ROOT_development := $(OUT_DIR)/target
 TARGET_OUT_ROOT_debug := $(DEBUG_OUT_DIR)/target
 TARGET_OUT_ROOT := $(TARGET_OUT_ROOT_$(TARGET_BUILD_TYPE))
 

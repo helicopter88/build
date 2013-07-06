@@ -68,13 +68,27 @@ function check_product()
     # hide successful answers, but allow the errors to show
 }
 
-VARIANT_CHOICES=(user userdebug eng codefirex)
-
 # Ensure our colors are used above preset colors
 # TODO: add color presets
 unset GCC_COLORS
 # Always use diagnostic colors, supported in gcc 4.9.y+
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+VARIANT_CHOICES=(user userdebug eng codefirex)
+TYPE_CHOICES=(release debug development)
+
+# check to see if the supplied type is valid
+function check_type()
+{
+    for v in ${TYPE_CHOICES[@]}
+    do
+        if [ "$v" = "$1" ]
+        then
+            return 0
+        fi
+    done
+    return 1
+}
 
 # check to see if the supplied variant is valid
 function check_variant()
@@ -280,47 +294,44 @@ function addcompletions()
 function choosetype()
 {
     echo "Build type choices are:"
-    echo "     1. release"
-    echo "     2. debug"
-    echo
+    local index=1
+    local v
+    for v in ${TYPE_CHOICES[@]}
+    do
+        # The product name is the name of the directory containing
+        # the makefile we found, above.
+        echo "     $index. $v"
+        index=$(($index+1))
+    done
 
-    local DEFAULT_NUM DEFAULT_VALUE
-    DEFAULT_NUM=1
-    DEFAULT_VALUE=release
+    local default_value=release
+    local ANSWER
 
     export TARGET_BUILD_TYPE=
-    local ANSWER
-    while [ -z $TARGET_BUILD_TYPE ]
+    while [ -z "$TARGET_BUILD_TYPE" ]
     do
-        echo -n "Which would you like? ["$DEFAULT_NUM"] "
+        echo -n "Which would you like? [$default_value] "
         if [ -z "$1" ] ; then
             read ANSWER
         else
             echo $1
             ANSWER=$1
         fi
-        case $ANSWER in
-        "")
-            export TARGET_BUILD_TYPE=$DEFAULT_VALUE
-            ;;
-        1)
-            export TARGET_BUILD_TYPE=release
-            ;;
-        release)
-            export TARGET_BUILD_TYPE=release
-            ;;
-        2)
-            export TARGET_BUILD_TYPE=debug
-            ;;
-        debug)
-            export TARGET_BUILD_TYPE=debug
-            ;;
-        *)
-            echo
-            echo "I didn't understand your response.  Please try again."
-            echo
-            ;;
-        esac
+
+        if [ -z "$ANSWER" ] ; then
+            export TARGET_BUILD_TYPE=$default_value
+        elif (echo -n $ANSWER | grep -q -e "^[0-9][0-9]*$") ; then
+            if [ "$ANSWER" -le "${#TYPE_CHOICES[@]}" ] ; then
+                export TARGET_BUILD_TYPE=${TYPE_CHOICES[$(($ANSWER-1))]}
+            fi
+        else
+            if check_type $ANSWER
+            then
+                export TARGET_BUILD_TYPE=$ANSWER
+            else
+                echo "** Not a valid build type: $ANSWER"
+            fi
+        fi
         if [ -n "$1" ] ; then
             break
         fi
@@ -529,7 +540,7 @@ function lunch()
     if [ $? -ne 0 ]
     then
         echo
-        echo "** Invalid variant: '$variant'"
+        echo "** Invalid build variant: '$variant'"
         echo "** Must be one of ${VARIANT_CHOICES[@]}"
         variant=
     fi
@@ -540,9 +551,34 @@ function lunch()
         return 1
     fi
 
+    local typeselection=${TYPE_CHOICES}
+    local type=$(echo -n $typeselection | sed -e "s/^[^\-]*-//")
+    check_type $type
+    if [ $? -ne 0 ]
+    then
+        echo
+        echo "** Invalid build type: '$type'"
+        echo "** Must be one of ${TYPE_CHOICES[@]}"
+        type=
+    fi
+
+    if [ -z "$type" ]
+    then
+        echo
+        return 1
+    fi
+
     export TARGET_PRODUCT=$product
     export TARGET_BUILD_VARIANT=$variant
-    export TARGET_BUILD_TYPE=release
+
+    local cfx_variant=codefirex
+    local development_type=development
+    if [ "$variant" = "$cfx_variant" ]; then
+        export TARGET_BUILD_TYPE=$development_type
+    else
+        export TARGET_BUILD_TYPE=$type
+    fi
+
 
     echo
 
@@ -569,6 +605,7 @@ function tapas()
 {
     local arch=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(arm|x86|mips)$'))
     local variant=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(user|userdebug|eng|codefirex)$'))
+    local type=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(release|debug|development)$'))
     local apps=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E -v '^(user|userdebug|eng|codefirex|arm|x86|mips)$'))
 
     if [ $(echo $arch | wc -w) -gt 1 ]; then
@@ -588,13 +625,21 @@ function tapas()
     if [ -z "$variant" ]; then
         variant=eng
     fi
+    local cfx_variant=codefirex
+    if [ -z "$type" ]; then
+        if [ "$variant" = "$cfx_variant" ]; then
+            type=development
+        else
+            type=release
+        fi
+    fi
     if [ -z "$apps" ]; then
         apps=all
     fi
 
     export TARGET_PRODUCT=$product
     export TARGET_BUILD_VARIANT=$variant
-    export TARGET_BUILD_TYPE=release
+    export TARGET_BUILD_TYPE=$type
     export TARGET_BUILD_APPS=$apps
 
     set_stuff_for_environment
