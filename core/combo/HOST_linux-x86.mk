@@ -52,6 +52,9 @@ HOST_GLOBAL_CFLAGS += -m32
 HOST_GLOBAL_LDFLAGS += -m32
 endif # BUILD_HOST_64bit
 
+CLANG_ROOT_PATH := prebuilts/clang/linux-x86/x86/i686-linux-android
+LLVM_ROOT_PATH := prebuilts/clang/linux-x86/x86/i686-linux-android
+
 ifneq ($(strip $(BUILD_HOST_static)),)
 # Statically-linked binaries are desirable for sandboxed environment
 HOST_GLOBAL_LDFLAGS += -static

@@ -1,7 +1,7 @@
-CLANG := $(HOST_OUT_EXECUTABLES)/clang$(HOST_EXECUTABLE_SUFFIX)
-CLANG_CXX := $(HOST_OUT_EXECUTABLES)/clang++$(HOST_EXECUTABLE_SUFFIX)
-LLVM_AS := $(HOST_OUT_EXECUTABLES)/llvm-as$(HOST_EXECUTABLE_SUFFIX)
-LLVM_LINK := $(HOST_OUT_EXECUTABLES)/llvm-link$(HOST_EXECUTABLE_SUFFIX)
+CLANG := prebuilts/clang/linux-x86/$(TARGET_ARCH)/arm-linux-androideabi/bin/arm-linux-androideabi-clang
+CLANG_CXX := prebuilts/clang/linux-x86/$(TARGET_ARCH)/arm-linux-androideabi/bin/arm-linux-androideabi-clang
+LLVM_AS := prebuilts/clang/linux-x86/$(TARGET_ARCH)/arm-linux-androideabi/bin/arm-linux-androideabi-llvm-as
+LLVM_LINK := prebuilts/clang/linux-x86/$(TARGET_ARCH)/arm-linux-androideabi/bin/arm-linux-androideabi-llvm-link
 
 define do-clang-flags-subst
   TARGET_GLOBAL_CLANG_FLAGS := $(subst $(1),$(2),$(TARGET_GLOBAL_CLANG_FLAGS))
@@ -12,18 +12,25 @@ define clang-flags-subst
   $(eval $(call do-clang-flags-subst,$(1),$(2)))
 endef
 
+CLANG_CONFIG_EXTRA_TARGET_C_INCLUDES := prebuilts/clang/linux-x86/$(TARGET_ARCH)/arm-linux-androideabi/lib/clang/3.4/include
 
 CLANG_CONFIG_EXTRA_CFLAGS := \
+  -DUSE_CLANG \
   -D__compiler_offsetof=__builtin_offsetof \
-  -Dnan=__builtin_nan \
+  -Dnan=__builtin_nan
 
 CLANG_CONFIG_UNKNOWN_CFLAGS := \
   -funswitch-loops
 
 ifeq ($(TARGET_ARCH),arm)
   CLANG_CONFIG_EXTRA_CFLAGS += \
+    -Qunused-arguments \
     -target arm-linux-androideabi \
     -nostdlibinc \
+    -Wno-unknown-warning-option \
+    -Wno-unused-parameter \
+    -Werror=c++11-narrowing \
+    -Werror=format-security \
     -B$(TARGET_TOOLCHAIN_ROOT)/arm-linux-androideabi/bin \
     -mllvm -arm-enable-ehabi
   CLANG_CONFIG_EXTRA_LDFLAGS += \
@@ -38,6 +45,7 @@ ifeq ($(TARGET_ARCH),arm)
     -fno-strict-volatile-bitfields \
     -fno-align-jumps \
     -Wa,--noexecstack
+
 endif
 ifeq ($(TARGET_ARCH),mips)
   CLANG_CONFIG_EXTRA_CFLAGS += \
@@ -74,9 +82,9 @@ ifeq ($(TARGET_ARCH),x86)
     -fno-inline-functions-called-once \
     -mfpmath=sse \
     -mbionic
+
 endif
 
-CLANG_CONFIG_EXTRA_TARGET_C_INCLUDES := external/clang/lib/include $(TARGET_OUT_HEADERS)/clang
 
 # remove unknown flags to define CLANG_FLAGS
 TARGET_GLOBAL_CLANG_FLAGS += $(filter-out $(CLANG_CONFIG_UNKNOWN_CFLAGS),$(TARGET_GLOBAL_CFLAGS))
@@ -88,10 +96,6 @@ TARGET_thumb_CLANG_CFLAGS += $(filter-out $(CLANG_CONFIG_UNKNOWN_CFLAGS),$(TARGE
 # llvm does not yet support -march=armv5e nor -march=armv5te, fall back to armv5 or armv5t
 $(call clang-flags-subst,-march=armv5te,-march=armv5t)
 $(call clang-flags-subst,-march=armv5e,-march=armv5)
-
-# clang does not support -Wno-psabi and -Wno-unused-but-set-variable
-$(call clang-flags-subst,-Wno-psabi,)
-$(call clang-flags-subst,-Wno-unused-but-set-variable,)
 
 ADDRESS_SANITIZER_CONFIG_EXTRA_CFLAGS := -faddress-sanitizer
 ADDRESS_SANITIZER_CONFIG_EXTRA_LDFLAGS := -Wl,-u,__asan_preinit

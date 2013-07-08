@@ -179,7 +179,7 @@ LOCAL_RENDERSCRIPT_INCLUDES := \
     $(LOCAL_RENDERSCRIPT_INCLUDES)
 else
 LOCAL_RENDERSCRIPT_INCLUDES := \
-    $(TOPDIR)external/clang/lib/Headers \
+    $(TOPDIR)prebuilts/clang/linux-x86/x86/i686-linux-android/tools/clang/lib/Headers \
     $(TOPDIR)frameworks/rs/scriptc \
     $(LOCAL_RENDERSCRIPT_INCLUDES)
 endif
